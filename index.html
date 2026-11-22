@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTA VI | Underground System</title>
+
+<style>
+* {box-sizing:border-box}
+
+body {
+ margin:0;
+ background:#090909;
+ color:white;
+ font-family:Arial,sans-serif;
+ overflow:hidden;
+}
+
+.screen {
+ min-height:100vh;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ background:
+ linear-gradient(180deg,rgba(0,0,0,.2),#090909),
+ radial-gradient(circle at 50% 30%,#66212d,#100b12 70%);
+ padding:20px;
+}
+
+.logo {
+ font-size:55px;
+ font-weight:1000;
+ letter-spacing:8px;
+ color:#ffb4c8;
+ text-shadow:0 0 25px #ff275d;
+}
+
+.subtitle {
+ color:#aaa;
+ letter-spacing:5px;
+ margin:10px;
+}
+
+.panel {
+ border:1px solid #ff426c;
+ background:#100d12eF;
+ box-shadow:0 0 30px #ff174455;
+ padding:25px;
+ width:100%;
+ max-width:430px;
+ text-align:center;
+ margin-top:35px;
+}
+
+button {
+ background:#e92755;
+ border:0;
+ color:white;
+ padding:15px 25px;
+ font-weight:bold;
+ letter-spacing:2px;
+ cursor:pointer;
+ width:100%;
+ margin-top:15px;
+}
+
+button:active {transform:scale(.97)}
+
+#terminalPage {display:none}
+
+.terminal {
+ background:#020805;
+ border:1px solid #00ff66;
+ box-shadow:0 0 25px #00ff4444;
+ width:100%;
+ max-width:500px;
+ padding:15px;
+}
+
+.termHeader {
+ color:#00ff66;
+ border-bottom:1px solid #176c39;
+ padding-bottom:12px;
+}
+
+#output {
+ height:260px;
+ overflow:hidden;
+ text-align:left;
+ color:#00ff66;
+ font-family:monospace;
+ font-size:12px;
+ overflow-wrap:anywhere;
+}
+
+.progress {
+ height:7px;
+ background:#183321;
+ margin-top:15px;
+}
+
+#bar {
+ height:100%;
+ width:0%;
+ background:#00ff66;
+ box-shadow:0 0 12px #00ff66;
+}
+
+#percent {
+ color:#00ff66;
+ font-family:monospace;
+ margin-top:10px;
+}
+
+.notification {
+ display:none;
+ position:fixed;
+ top:25px;
+ left:50%;
+ transform:translateX(-50%);
+ width:90%;
+ max-width:350px;
+ background:#252525;
+ border:1px solid #555;
+ border-radius:15px;
+ padding:17px;
+ box-shadow:0 10px 40px #000;
+ z-index:10;
+ animation:pop .5s ease;
+}
+
+@keyframes pop {
+ from {opacity:0;transform:translate(-50%,-30px)}
+ to {opacity:1;transform:translate(-50%,0)}
+}
+
+.small {color:#999;font-size:11px}
+</style>
+</head>
+
+<body>
+
+<div class="screen" id="home">
+ <div class="logo">VI</div>
+ <div class="subtitle">VICE CITY UNDERGROUND</div>
+
+ <div class="panel">
+  <h2>UNDERGROUND ACCESS</h2>
+  <p class="small">SYSTEM CONNECTION ESTABLISHED</p>
+  <button onclick="openTerminal()">LAYOUT 89</button>
+  <p class="small">VERSION 6.0.89</p>
+ </div>
+</div>
+
+<div class="screen" id="terminalPage">
+ <div class="terminal">
+  <div class="termHeader">
+   ROOT TERMINAL // LAYOUT 89
+  </div>
+
+  <p style="color:#00ff66;font-family:monospace">
+   SYSTEM READY...
+  </p>
+
+  <div id="output"></div>
+
+  <div class="progress">
+   <div id="bar"></div>
+  </div>
+
+  <div id="percent">0%</div>
+
+  <button id="startBtn" onclick="startHack()">
+   CLAPPED
+  </button>
+
+  <button onclick="goHome()" style="background:#333">
+   EXIT TERMINAL
+  </button>
+ </div>
+</div>
+
+<div class="notification" id="notification">
+ <div style="font-size:12px;color:#aaa">
+  SYSTEM NOTIFICATION · NOW
+ </div>
+ <h3 style="margin:8px 0;color:#00ff66">
+  ✓ JAILBREAK COMPLETE
+ </h3>
+ <div style="color:#ddd;font-size:13px">
+  Operation finished successfully.
+ </div>
+</div>
+
+<script>
+function openTerminal(){
+ document.getElementById("home").style.display="none";
+ document.getElementById("terminalPage").style.display="flex";
+}
+
+function goHome(){
+ document.getElementById("terminalPage").style.display="none";
+ document.getElementById("home").style.display="flex";
+}
+
+let running=false;
+
+function startHack(){
+ if(running)return;
+ running=true;
+
+ const output=document.getElementById("output");
+ const bar=document.getElementById("bar");
+ const percent=document.getElementById("percent");
+ const button=document.getElementById("startBtn");
+
+ button.disabled=true;
+ button.textContent="PROCESSING...";
+
+ const messages=[
+ "INITIALIZING VICE CITY SYSTEM...",
+ "CONNECTING TO MAINFRAME...",
+ "SCANNING VIRTUAL NETWORK...",
+ "LOADING MODULE 89...",
+ "EXECUTING SIMULATION...",
+ "DECRYPTING FAKE DATA...",
+ "BYPASSING SIMULATED FIREWALL...",
+ "ACCESS GRANTED...",
+ "FINALIZING OPERATION..."
+ ];
+
+ const chars="01ABCDEF#$%&*@!<>/SYSTEM_ROOT_";
+
+ let progress=0;
+
+ const interval=setInterval(()=>{
+  let text="";
+
+  for(let i=0;i<12;i++){
+   text+=chars[Math.floor(Math.random()*chars.length)];
+  }
+
+  let line=document.createElement("div");
+  line.textContent="> "+text+" "+messages[Math.floor(Math.random()*messages.length)];
+  output.appendChild(line);
+
+  while(output.children.length>35){
+   output.removeChild(output.firstChild);
+  }
+
+  progress+=2;
+  if(progress>100)progress=100;
+
+  bar.style.width=progress+"%";
+  percent.textContent=progress+"%";
+
+  if(progress>=100){
+   clearInterval(interval);
+   output.innerHTML+="<br>> SIMULATION COMPLETE<br>> ALL SYSTEMS FINISHED";
+   button.textContent="COMPLETED";
+   document.getElementById("notification").style.display="block";
+
+   if("Notification" in window && Notification.permission==="granted"){
+    new Notification("JAILBREAK COMPLETE",{
+     body:"Operation finished successfully."
+    });
+   }
+   running=false;
+  }
+ },50);
+}
+</script>
+
+</body>
+</html>
